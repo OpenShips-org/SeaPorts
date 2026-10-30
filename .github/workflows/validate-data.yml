@@ -1,0 +1,104 @@
+
+name: SeaPorts Data Validation
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "data/**"
+      - "scripts/validate_data.py"
+      - "requirements.txt"
+      - ".github/workflows/validate-data.yml"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    name: Validate GeoJSON Data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate GeoJSON files
+        id: validation
+        continue-on-error: true
+        env:
+          REPORT_PATH: /tmp/seaports-validation-report.md
+        run: |
+          python scripts/validate_data.py
+
+      - name: Publish PR validation report
+        if: >-
+          always() &&
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/github-script@v7
+        env:
+          REPORT_PATH: /tmp/seaports-validation-report.md
+        with:
+          script: |
+            const fs = require("fs");
+
+            const marker = "<!-- seaports-data-validation -->";
+            const reportPath = process.env.REPORT_PATH;
+
+            const report = fs.existsSync(reportPath)
+              ? fs.readFileSync(reportPath, "utf8")
+              : "# SeaPorts – Data Validation Report\n\n❌ The validator did not produce a report.";
+
+            const body = `${marker}\n${report}`;
+
+            const issue_number = context.issue.number;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              per_page: 100
+            });
+
+            const existingComment = comments.find(comment =>
+              comment.body && comment.body.includes(marker)
+            );
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number,
+                body
+              });
+            }
+
+      - name: Report validation failure
+        if: steps.validation.outcome == 'failure'
+        run: |
+          echo "SeaPorts data validation failed."
+          exit 1

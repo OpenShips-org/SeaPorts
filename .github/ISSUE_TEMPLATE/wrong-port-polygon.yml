@@ -1,0 +1,66 @@
+
+name: Wrong Port Polygon
+description: Report a missing, incorrect, or incomplete port polygon.
+title: "[Wrong Port Polygon]: "
+labels:
+  - incorrect-polygon
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to report problems with port polygon geometries.
+
+  - type: input
+    id: port-name
+    attributes:
+      label: Port Name
+      placeholder: Port of Hamburg
+    validations:
+      required: true
+
+  - type: input
+    id: port-id
+    attributes:
+      label: Port ID
+      description: The corresponding port ID, if known.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: problem-type
+    attributes:
+      label: Problem Type
+      options:
+        - Polygon is missing
+        - Polygon is too large
+        - Polygon is too small
+        - Polygon has an incorrect shape
+        - Polygon is in the wrong location
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe what is wrong with the polygon.
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Reference or Source
+      description: Link to a map, dataset, or other reliable reference.
+      placeholder: https://example.com
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Information
+      description: You can include coordinates, screenshots, or other details.
+    validations:
+      required: false

@@ -1,6 +1,13 @@
 # SEAPORTS of the World
 This repository contains a comprehensive dataset of seaports around the world, including their locations, codes and a geographical boundary for each port. The dataset is designed to be used for various applications, including logistics, shipping, and maritime research.
 
+## Disclaimer
+The dataset is provided "as is" without any warranties or guarantees. The accuracy and completeness of the data cannot be guaranteed, and users are encouraged to verify the information before using it for any critical applications. The dataset is intended for informational purposes only and should not be used as the sole source of information for decision-making in maritime operations or logistics.
+
+The Geographical boundaries of the ports are roughly defined and may not accurately represent the actual port areas. Users should exercise caution when using the geographical data for navigation or planning purposes.
+
+If you find any errors or inaccuracies in the dataset, please feel free to submit an issue or pull request to help improve the data quality. Your contributions are greatly appreciated.
+
 ## Dataset Overview
 The dataset includes the following information for each seaport:
 - Port Name

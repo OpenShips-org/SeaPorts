@@ -1,0 +1,61 @@
+
+name: Wrong Port Data
+description: Report incorrect or outdated information about an existing port.
+title: "[Wrong Port Data]: "
+labels:
+  - incorrect-data
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please describe which information is incorrect and provide the correct value if possible.
+
+  - type: input
+    id: port-name
+    attributes:
+      label: Port Name
+      placeholder: Port of Hamburg
+    validations:
+      required: true
+
+  - type: input
+    id: port-id
+    attributes:
+      label: Port ID
+      description: The ID used in SeaPorts, if known.
+    validations:
+      required: false
+
+  - type: input
+    id: attribute
+    attributes:
+      label: Incorrect Attribute
+      description: Which attribute contains incorrect information?
+      placeholder: Country
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-value
+    attributes:
+      label: Current Value
+      description: What value is currently stored?
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct-value
+    attributes:
+      label: Expected Value
+      description: What should the correct value be?
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Provide a reliable source for the correction.
+      placeholder: https://example.com
+    validations:
+      required: true

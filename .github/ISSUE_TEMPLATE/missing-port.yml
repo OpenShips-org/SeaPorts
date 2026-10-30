@@ -1,0 +1,55 @@
+
+name: Missing Port
+description: Report a port that is missing from the SeaPorts dataset.
+title: "[Missing Port]: "
+labels:
+  - missing-port
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve SeaPorts!
+        Please provide as much information as possible about the missing port.
+
+  - type: input
+    id: port-name
+    attributes:
+      label: Port Name
+      description: What is the official or commonly used name of the port?
+      placeholder: Port of Hamburg
+    validations:
+      required: true
+
+  - type: input
+    id: country
+    attributes:
+      label: Country
+      placeholder: Germany
+    validations:
+      required: true
+
+  - type: input
+    id: coordinates
+    attributes:
+      label: Coordinates
+      description: Latitude and longitude in decimal degrees, if known.
+      placeholder: "53.5461, 9.9661"
+    validations:
+      required: false
+
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Provide a reliable source confirming the port exists.
+      placeholder: https://example.com
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Information
+      description: Any other relevant information about this port?
+    validations:
+      required: false
