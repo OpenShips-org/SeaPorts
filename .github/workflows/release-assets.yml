@@ -1,0 +1,45 @@
+
+name: SeaPorts Release Assets
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
+
+jobs:
+  upload:
+    name: Upload GeoJSON Release Assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify GeoJSON files
+        run: |
+          files=(
+            "data/source/ports.geojson"
+            "data/source/port_polygons.geojson"
+            "data/processed/ports_combined.geojson"
+          )
+
+          for file in "${files[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              echo "Missing file: $file"
+              exit 1
+            fi
+          done
+
+      - name: Upload Release Assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            data/source/ports.geojson \
+            data/source/port_polygons.geojson \
+            data/processed/ports_combined.geojson \
+            --clobber

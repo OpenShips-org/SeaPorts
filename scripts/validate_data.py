@@ -11,7 +11,7 @@ from shapely.validation import explain_validity
 
 
 ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "data"
+DATA_DIR = ROOT / "data/source"
 
 PORTS_FILE = DATA_DIR / "ports.geojson"
 POLYGONS_FILE = DATA_DIR / "port_polygons.geojson"
